@@ -9,6 +9,9 @@ namespace VendingMachine
    public class Machine
     {
         private double credit;
+        public int userWantedItem = 0;
+        public int userWantedQuantity = 0;
+        public int newCredit = 0;
         public Machine()
         {
             credit = 0;
@@ -16,8 +19,17 @@ namespace VendingMachine
         public double GetCredit()
         {
             Console.WriteLine("Enter credit...");
-            int newCredit = Convert.ToInt16(Console.ReadLine());
-            credit += newCredit;
+            try
+            {
+                newCredit = Convert.ToInt16(Console.ReadLine());
+                credit += newCredit;
+            }
+            catch (FormatException )
+            {
+                Console.WriteLine("Invalid amount of credit. Please insert a  multiple of 1. Press any key to reset.");
+                Console.ReadKey();
+                GetCredit();
+            }
             return credit;
         }
         public void Refund()
@@ -51,18 +63,27 @@ namespace VendingMachine
             Console.WriteLine("* Vending Machine *");
             Console.WriteLine("*******************");
             Console.WriteLine();
-            Console.WriteLine("Your credit is "+ this.credit+ "$");
+            Console.WriteLine("Your credit is "+ credit + "$");
             Console.WriteLine();
             for (int i = 0; i < Items.Count; i++)
             {
                 if(Items[i].Quantity > 0)
                 Console.WriteLine(i + " - " + Items[i].Item + " -> Price: " + Items[i].Price + "$ " + " Quantity available: " +  Items[i].Quantity);
             }
-            Console.WriteLine("8 - Insert credit.");
-            Console.WriteLine("9 - Refund credit.");
+            Console.WriteLine(Items.Count + " - Insert credit.");
+            Console.WriteLine((Items.Count+1) + " - Refund credit.");
             
             Console.WriteLine("Please select an item... ");
-            int userWantedItem = Convert.ToInt16(Console.ReadLine());
+            try
+            {
+                 userWantedItem = Convert.ToInt16(Console.ReadLine());
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Wrong input, please try again. Press any key to reset.");
+                Console.ReadKey();
+                DisplayMachine();
+            }
             if (userWantedItem == 8)
             {
                 GetCredit();
@@ -79,9 +100,18 @@ namespace VendingMachine
             else if (userWantedItem < 9 && userWantedItem >= 0)
                 Console.WriteLine();
             Console.WriteLine("Please insert the quantity... ");
-            int userWantedQuantity = Convert.ToInt16(Console.ReadLine());
+            try
+            {
+                userWantedQuantity = Convert.ToInt16(Console.ReadLine());
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Wrong input, please try again. Press any key to reset.");
+                Console.ReadKey();
+                DisplayMachine();
+            }
             Console.WriteLine();
-            Console.WriteLine("Please make the payment if actual credit is not enough");
+            Console.WriteLine("Enter credit if needed otherwise enter 0.");
             GetCredit();
 
             if(credit >= Items[userWantedItem].Price*userWantedQuantity && userWantedQuantity <= Items[userWantedItem].Quantity )
