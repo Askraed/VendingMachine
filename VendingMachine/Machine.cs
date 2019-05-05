@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace VendingMachine
 {
    public class Machine
-    {
+   {
         private double credit;
         private int userWantedItem = 0;
         private int userWantedQuantity = 0;
@@ -43,6 +43,7 @@ namespace VendingMachine
             Environment.Exit(0);
         }
         
+        
 
         public List<VendingItem> Items = new List<VendingItem>();
         public void FillMachine()
@@ -77,10 +78,9 @@ namespace VendingMachine
             Console.WriteLine((Items.Count+1) + " - Refund credit.");
             
             Console.WriteLine("Please select an item... ");
-           
             try
             {
-                 userWantedItem = Convert.ToInt16(Console.ReadLine());
+                userWantedItem = Convert.ToInt16(Console.ReadLine());
             }
             catch (FormatException)
             {
@@ -88,6 +88,7 @@ namespace VendingMachine
                 Console.ReadKey();
                 DisplayMachine();
             }
+            
             
             if (userWantedItem == Items.Count)
             {
@@ -196,6 +197,6 @@ namespace VendingMachine
             Console.ReadKey();
 
         }
-    }
-    
+   }
+
 }
