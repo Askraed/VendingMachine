@@ -9,9 +9,10 @@ namespace VendingMachine
    public class Machine
     {
         private double credit;
-        public int userWantedItem = 0;
-        public int userWantedQuantity = 0;
-        public int newCredit = 0;
+        private int userWantedItem = 0;
+        private int userWantedQuantity = 0;
+        private double newCredit = 0;
+        private int userOption = 0;
         public Machine()
         {
             credit = 0;
@@ -21,7 +22,7 @@ namespace VendingMachine
             Console.WriteLine("Enter credit...");
             try
             {
-                newCredit = Convert.ToInt16(Console.ReadLine());
+                newCredit = Convert.ToDouble(Console.ReadLine());
                 credit += newCredit;
             }
             catch (FormatException )
@@ -34,12 +35,14 @@ namespace VendingMachine
         }
         public void Refund()
         {
+            Console.WriteLine("Thank you for purchasing!");
             Console.WriteLine("You have been refunded " + credit + "$.");
             credit = 0;
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
             Environment.Exit(0);
         }
+        
 
         public List<VendingItem> Items = new List<VendingItem>();
         public void FillMachine()
@@ -74,6 +77,7 @@ namespace VendingMachine
             Console.WriteLine((Items.Count+1) + " - Refund credit.");
             
             Console.WriteLine("Please select an item... ");
+           
             try
             {
                  userWantedItem = Convert.ToInt16(Console.ReadLine());
@@ -84,20 +88,21 @@ namespace VendingMachine
                 Console.ReadKey();
                 DisplayMachine();
             }
-            if (userWantedItem == 8)
+            
+            if (userWantedItem == Items.Count)
             {
                 GetCredit();
                 DisplayMachine();
             }
-            else if (userWantedItem == 9)
+            else if (userWantedItem == (Items.Count + 1))
                 Refund();
-            else if (userWantedItem > 9 || userWantedItem < 0)
+            else if (userWantedItem > (Items.Count + 1) || userWantedItem < 0)
             {
                 Console.WriteLine("Selection does not exist. Press any key to refresh!");
                 Console.ReadKey();
                 DisplayMachine();
             }
-            else if (userWantedItem < 9 && userWantedItem >= 0)
+            else if (userWantedItem < (Items.Count + 1) && userWantedItem >= 0)
                 Console.WriteLine();
             Console.WriteLine("Please insert the quantity... ");
             try
@@ -118,12 +123,23 @@ namespace VendingMachine
             {
                 Items[userWantedItem].Quantity -= userWantedQuantity;
                 credit -= Items[userWantedItem].Price * userWantedQuantity;
-                Console.WriteLine("For buying something else press 1, for change press 2...");
-                int userOption = Convert.ToInt16(Console.ReadLine());
+                Console.WriteLine("For buying something else press 1, for change and exit press any other number...");
+                try
+                {
+                    userOption = Convert.ToInt16(Console.ReadLine());
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Wrong input, please try again. Press any key to reset.");
+                    Console.ReadKey();
+                    DisplayMachine();
+                }
+
                 if (userOption == 1)
                     DisplayMachine();
                 else
-                    Console.WriteLine("Thank you for purchasing! Your change is " + credit + "$");
+                    Refund();
+                   
             }
             else if (credit >= Items[userWantedItem].Price * userWantedQuantity && userWantedQuantity > Items[userWantedItem].Quantity)
             {
@@ -139,12 +155,22 @@ namespace VendingMachine
                     }
                     else
                     {
-                        Console.WriteLine("For buying something else press 1, for change press 2...");
-                        userOption = Convert.ToInt16(Console.ReadLine());
+                        Console.WriteLine("For buying something else press 1, for change and exit press any other number...");
+                        try
+                        {
+                            userOption = Convert.ToInt16(Console.ReadLine());
+                        }
+                        catch (FormatException)
+                        {
+                            Console.WriteLine("Wrong input, please try again. Press any key to reset.");
+                            Console.ReadKey();
+                            DisplayMachine();
+                        }
                         if (userOption == 1)
                             DisplayMachine();
                         else
-                            Console.WriteLine("Thank you for purchasing! Your change is " + credit+ "$");
+                            Refund();
+                           
                     }
                 }
                 else
