@@ -75,7 +75,7 @@ namespace VendingMachine
                 Console.WriteLine(i + " - " + Items[i].Item + " -> Price: " + Items[i].Price + "$ " + " Quantity available: " +  Items[i].Quantity);
             }
             Console.WriteLine(Items.Count + " - Insert credit.");
-            Console.WriteLine((Items.Count+1) + " - Refund credit.");
+            Console.WriteLine(Items.Count+1 + " - Refund credit and Exit.");
             
             Console.WriteLine("Please select an item... ");
             try
