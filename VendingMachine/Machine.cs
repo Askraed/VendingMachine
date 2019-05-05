@@ -27,7 +27,7 @@ namespace VendingMachine
             }
             catch (FormatException )
             {
-                Console.WriteLine("Invalid amount of credit. Please insert a  multiple of 1. Press any key to reset.");
+                Console.WriteLine("Invalid amount of credit. Please insert a  multiple of 0.1. Press any key to reset.");
                 Console.ReadKey();
                 GetCredit();
             }
